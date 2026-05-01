@@ -54,4 +54,4 @@ See [`findings_report.md`](./findings_report.md) for the complete analysis with 
 
 ## 👤 Author
 
-**elidsimo** — CodeAlpha Cybersecurity Intern
+**EL-IDRYSY Mohamed** — CodeAlpha Cybersecurity Intern
