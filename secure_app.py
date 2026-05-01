@@ -14,9 +14,7 @@ import subprocess
 import re
 import logging
 
-# ------------------------------------------------------------------ #
 # FIX 1: No hard-coded credentials — use environment variables
-# ------------------------------------------------------------------ #
 SECRET_KEY  = os.environ.get("SECRET_KEY")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 API_KEY     = os.environ.get("API_KEY")
@@ -44,9 +42,7 @@ def get_db_connection():
     return conn
 
 
-# ------------------------------------------------------------------ #
 # FIX 2: Parameterized queries prevent SQL Injection
-# ------------------------------------------------------------------ #
 def login(username: str, password: str) -> bool:
     """Authenticate a user safely using parameterized queries."""
     conn = get_db_connection()
@@ -65,25 +61,21 @@ def login(username: str, password: str) -> bool:
     return hmac.compare_digest(stored_hash, candidate_hash)
 
 
-# ------------------------------------------------------------------ #
 # FIX 3: Strong hashing — bcrypt-style using SHA-256 + unique salt
-# ------------------------------------------------------------------ #
 def hash_password(password: str, salt: str = None):
     """Hash a password with SHA-256 and a random salt."""
     if salt is None:
-        salt = secrets.token_hex(32)          # GOOD: unique random salt per user
+        salt = secrets.token_hex(32)          
     hashed = hashlib.pbkdf2_hmac(
         "sha256",
         password.encode("utf-8"),
         salt.encode("utf-8"),
-        iterations=260_000                    # GOOD: high iteration count
+        iterations=260_000                   
     ).hex()
     return hashed, salt
 
 
-# ------------------------------------------------------------------ #
 # FIX 4: No shell=True — validated input prevents Command Injection
-# ------------------------------------------------------------------ #
 VALID_HOSTNAME = re.compile(r"^[a-zA-Z0-9.\-]{1,253}$")
 
 def ping_host(hostname: str) -> str:
@@ -95,9 +87,7 @@ def ping_host(hostname: str) -> str:
     return result.stdout
 
 
-# ------------------------------------------------------------------ #
 # FIX 5: Path sanitisation prevents Path Traversal
-# ------------------------------------------------------------------ #
 UPLOAD_DIR = "/var/www/uploads"
 
 def read_file(filename: str) -> str:
@@ -110,9 +100,7 @@ def read_file(filename: str) -> str:
         return f.read()
 
 
-# ------------------------------------------------------------------ #
 # FIX 6: Replace pickle with JSON — safe deserialization
-# ------------------------------------------------------------------ #
 import json
 
 def load_user_session(session_data: str) -> dict:
@@ -121,14 +109,12 @@ def load_user_session(session_data: str) -> dict:
     return json.loads(session_data)
 
 
-# ------------------------------------------------------------------ #
-# FIX 7: Never log plaintext passwords
-# ------------------------------------------------------------------ #
+# FIX 7: Never log plaintext passwords #
 def create_user(username: str, password: str) -> None:
     """Create a new user account securely."""
     conn = get_db_connection()
     hashed, salt = hash_password(password)
-    logger.info("Creating user: %s", username)   # GOOD: only username logged, never password
+    logger.info("Creating user: %s", username)   
     try:
         conn.execute(
             "INSERT INTO users (username, password, salt) VALUES (?, ?, ?)",
@@ -141,9 +127,7 @@ def create_user(username: str, password: str) -> None:
         conn.close()
 
 
-# ------------------------------------------------------------------ #
-# Simple demo entry point
-# ------------------------------------------------------------------ #
+# Simple demo entry point #
 if __name__ == "__main__":
     create_user("alice", "mypassword")
     result = login("alice", "mypassword")
