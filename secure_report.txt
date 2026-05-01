@@ -1,0 +1,51 @@
+Run started:2026-05-01 16:59:35.525166+00:00
+
+Test results:
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: ./secure_app.py:13:0
+12	import secrets
+13	import subprocess
+14	import re
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: ./secure_app.py:94:13
+93	    # GOOD: list form + shell=False — no shell injection possible
+94	    result = subprocess.run(["ping", "-c", "1", hostname], shell=False, capture_output=True, text=True, timeout=5)
+95	    return result.stdout
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: ./secure_app.py:94:13
+93	    # GOOD: list form + shell=False — no shell injection possible
+94	    result = subprocess.run(["ping", "-c", "1", hostname], shell=False, capture_output=True, text=True, timeout=5)
+95	    return result.stdout
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 96
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 3
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 3
+Files skipped (0):
