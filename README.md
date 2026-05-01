@@ -23,7 +23,7 @@ CodeAlpha_SecureCodingReview/
 
 ```bash
 pip install bandit
-bandit vulnerable_app.py
+bandit -r vulnerable_app.py -f txt -o bandit_report.txt
 ```
 
 ---
@@ -36,56 +36,7 @@ bandit vulnerable_app.py
 | 🟠 Medium | 2     | SQL Injection, Insecure Deserialization |
 | 🟡 Low    | 3     | Hard-coded Credentials, Path Traversal, Log Exposure |
 
----
 
-## 🔍 Key Findings
-
-### 1. Command Injection
-```python
-# ❌ Vulnerable
-subprocess.run("ping -c 1 " + hostname, shell=True)
-
-# ✅ Fixed
-subprocess.run(["ping", "-c", "1", hostname], shell=False)
-```
-
-### 2. SQL Injection
-```python
-# ❌ Vulnerable
-query = "SELECT * FROM users WHERE username = '" + username + "'"
-
-# ✅ Fixed
-cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
-```
-
-### 3. Weak Hashing
-```python
-# ❌ Vulnerable
-hashlib.md5(password.encode()).hexdigest()
-
-# ✅ Fixed
-hashlib.pbkdf2_hmac("sha256", password.encode(), salt.encode(), iterations=260_000)
-```
-
-### 4. Insecure Deserialization
-```python
-# ❌ Vulnerable
-pickle.loads(session_data)
-
-# ✅ Fixed
-json.loads(session_data)
-```
-
-### 5. Hard-coded Credentials
-```python
-# ❌ Vulnerable
-SECRET_KEY = "admin123"
-
-# ✅ Fixed
-SECRET_KEY = os.environ.get("SECRET_KEY")
-```
-
----
 
 ## 📖 Full Report
 
