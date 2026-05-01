@@ -1,4 +1,4 @@
-# 🔐 Secure Coding Review — CodeAlpha Internship Task 3
+# 🔐 Secure Coding Review
 
 A Python security code review project that identifies and remediates common vulnerabilities using **Bandit**, a static analysis tool for Python.
 
