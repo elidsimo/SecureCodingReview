@@ -1,7 +1,6 @@
 # Secure Coding Review — Findings Report
 **Project:** vulnerable_app.py  
 **Reviewer:** EL-IDRYSY Mohamed  
-**Date:** 2026-05-01  
 **Tool used:** Bandit 1.9.4  
 
 ---
